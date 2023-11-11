@@ -1,0 +1,67 @@
+basePath: /api/v1
+definitions:
+  models.UserModel:
+    description: Model that includes basic user information such as name, surname,
+      username, email and password.
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      surname:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: This is an example API for Go REST API with Swagger and GORM
+  title: Example API
+  version: "1"
+paths:
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Returns all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserModel'
+            type: array
+      summary: Returns all users
+      tags:
+      - users
+    post:
+      consumes:
+      - application/json
+      description: creates a new user with the input payload
+      parameters:
+      - description: User's info
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserModel'
+      summary: Creates a new user
+      tags:
+      - users
+swagger: "2.0"
