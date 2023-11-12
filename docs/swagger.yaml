@@ -1,22 +1,58 @@
 basePath: /api/v1
 definitions:
-  models.UserModel:
-    description: Model that includes basic user information such as name, surname,
-      username, email and password.
+  models.UserCreateModel:
+    properties:
+      email:
+        example: johndoe@example.com
+        type: string
+      name:
+        example: John
+        type: string
+      password:
+        example: verySecureP4ssword
+        type: string
+      surname:
+        example: Doe
+        type: string
+      username:
+        example: john_doe
+        type: string
+    type: object
+  models.UserUpdateModel:
+    properties:
+      email:
+        example: johndoe@example.com
+        type: string
+      name:
+        example: John
+        type: string
+      surname:
+        example: Doe
+        type: string
+      username:
+        example: john_doe
+        type: string
+    type: object
+  models.UserViewModel:
     properties:
       created_at:
         type: string
       email:
+        example: johndoe@example.com
         type: string
       id:
+        example: 1
         type: integer
       name:
+        example: John
         type: string
       surname:
+        example: Doe
         type: string
       updated_at:
         type: string
       username:
+        example: john_doe
         type: string
     type: object
 host: localhost:8000
@@ -38,7 +74,7 @@ paths:
           description: OK
           schema:
             items:
-              $ref: '#/definitions/models.UserModel'
+              $ref: '#/definitions/models.UserViewModel'
             type: array
       summary: Returns all users
       tags:
@@ -53,15 +89,86 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/models.UserModel'
+          $ref: '#/definitions/models.UserCreateModel'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/models.UserModel'
+            $ref: '#/definitions/models.UserViewModel'
       summary: Creates a new user
+      tags:
+      - users
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: deletes a user with the input payload
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+      summary: Deletes a user
+      tags:
+      - users
+    get:
+      consumes:
+      - application/json
+      description: returns a user with the input payload
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserViewModel'
+        "404":
+          description: Not Found
+      summary: Returns a user
+      tags:
+      - users
+    put:
+      consumes:
+      - application/json
+      description: updates a user with the input payload
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User's info
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserUpdateModel'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserViewModel'
+        "404":
+          description: Not Found
+      summary: Updates a user
       tags:
       - users
 swagger: "2.0"
